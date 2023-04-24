@@ -103,7 +103,7 @@ const Inbox: React.FC = () => {
       hasRecv.current = false;
       return;
     }
-    handleRecv()
+    handleTest()
  
   },[])
   return (
@@ -133,8 +133,8 @@ const Inbox: React.FC = () => {
             </div>
           
               <div className="mb-1">
-                <p className="text-gray-700 max-h-10 truncate px-3 text-sm">
-                {record.data.msg.title}
+                <p className="text-gray-700 px-3 text-sm break-all" dangerouslySetInnerHTML={{__html:record.data.msg.content.replaceAll("\n","<br />")}}>
+              
                 </p>
               </div>
             
@@ -144,7 +144,7 @@ const Inbox: React.FC = () => {
                  
               </div>
               <div className="flex space-x-3 text-gray-500 text-sm font-thin">
-              {record.data.msg.content}
+              {record.data.msg.title}
               </div>
             </div>
           </div>

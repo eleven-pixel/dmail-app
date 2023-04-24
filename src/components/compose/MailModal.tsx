@@ -121,12 +121,12 @@ export const MailModal: FC<MailModalProps> = ({ className = '', container = 'bod
         ipfs.stop()
 
         var messageCid = Utils.cidToField(cid.toString())
-        console.log(messageCid)
+        //console.log(messageCid)
 
         var replyCid = Utils.cidToField("")
-        console.log(replyCid)
+        //console.log(replyCid)
         const timestamp: number = Date.parse(new Date().toString())
-        console.log(timestamp)
+        //console.log(timestamp)
         const inputs = [
           refTo.current?.value,
           `${messageCid}`,

@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
     <div className="w-full h-14 bg-black grid grid-cols-7 gap-4 fixed z-50 ">
       <div className="col-span-2 flex items-center">
         <div className="flex items-center ml-2">
-          <div className="h-10 text-primary text-white">dmail</div>
+            <a href="/"><img src="logo.png" width={130}></img></a>
         </div>
       </div>
       <div className="col-span-3 flex items-center justify-center space-x-2">
