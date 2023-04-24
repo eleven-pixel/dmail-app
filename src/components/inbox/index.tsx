@@ -103,7 +103,7 @@ const Inbox: React.FC = () => {
       hasRecv.current = false;
       return;
     }
-    handleTest()
+    handleRecv()
  
   },[])
   return (

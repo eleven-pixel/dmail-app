@@ -8,8 +8,9 @@ Building damil app using React, Tailwind CSS, and TypeScript 🔥
 
 # Installation
 
-```javascript
-cd YOUR-PROJECT-FOLDER
+```run 
+git clone https://github.com/eleven-pixel/dmail-app.git
+cd dmail-app
 yarn  // install all packages dependencies
 yarn start  // run 
 ```
