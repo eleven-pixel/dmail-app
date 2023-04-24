@@ -58,46 +58,7 @@ const Inbox: React.FC = () => {
     }
     resetMessageRecords(records)
   }
-  async function handleTest () {
- 
-    var res = await axios.get('/test.json')
-    const ipfs = await IPFS.create()
-
-    let map = new Map<string,any>()
-    var records = res.data
-
-    for(let i =0;i < records.length;i++) {
-        var cid =  Utils.fieldToCid(records[i].data.cid)
-        map.set(cid,""); 
-        cid = Utils.fieldToCid(records[i].data.reply)
-        map.set(cid,""); 
-    }
-    let iterator = map.keys();  
-    let r: IteratorResult<string,string>;   
-    while (r = iterator.next(), !r.done) { 
-      var cid = r.value
-      const source = ipfs.cat(cid)
-      let s = ''
-      const decoder = new TextDecoder('utf-8')
-      for await (const chunk of source) {
-        s += decoder.decode(chunk, {
-          stream: true
-        })
-      }
-      s += decoder.decode()
-      map.set(cid,JSON.parse(s)) 
-    } 
-    ipfs.stop() 
-    for(let i =0;i < records.length;i++) {
-      var record = records[i]
-      var cid =  Utils.fieldToCid(record.data.cid)
-      record.data.msg = map.get(cid)
-      cid = Utils.fieldToCid(record.data.reply)
-      record.data.replymsg = map.get(cid)
-    }
-    resetMessageRecords(records)
-  }
- 
+   
   useEffect(() => {
     if(hasRecv.current){
       hasRecv.current = false;
@@ -106,6 +67,7 @@ const Inbox: React.FC = () => {
     handleRecv()
  
   },[])
+  
   return (
     <>
       <div className="mt-4 w-full h-full">
