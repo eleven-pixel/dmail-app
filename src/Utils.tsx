@@ -59,3 +59,5 @@ export default {
     return bi
   }
 };
+
+export const DMAIL_PROGRAM_NAME = 'dmail.aleo'; 

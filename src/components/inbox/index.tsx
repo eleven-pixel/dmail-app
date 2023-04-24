@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
 import { useWallet } from '@demox-labs/aleo-wallet-adapter-react';
-import { Button } from '@demox-labs/aleo-wallet-adapter-reactui/dist/Button';
-import Utils from './Utils';
- 
+import React, { useEffect, useRef, useState } from 'react';
+import Utils, { DMAIL_PROGRAM_NAME } from '../../Utils';
 import axios from 'axios';
-import * as IPFS from 'ipfs-core'
 import { WalletNotConnectedError } from '@demox-labs/aleo-wallet-adapter-base';
-import { DMAIL_PROGRAM_NAME } from './App';
+import * as IPFS from 'ipfs-core'
 
-export const CHAT_PROGRAM_NAME = 'chat.aleo'; 
+import { RiUserReceivedFill } from "react-icons/ri";
 
-function Box() {
- 
+const Inbox: React.FC = () => {
+  
   const { wallet, publicKey ,requestRecords} = useWallet();
 
   let [messageRecords, resetMessageRecords] = useState<any>([]);
 
-  const handleRecv = async (event: any) => {
-    event.preventDefault();
+  const hasRecv = useRef(true);
+
+  async function handleRecv () {
+ 
     if (!publicKey) throw new WalletNotConnectedError();
 
     const records = (await requestRecords!(DMAIL_PROGRAM_NAME)) || '';
@@ -60,7 +58,8 @@ function Box() {
     }
     resetMessageRecords(records)
   }
-  async function handleClick () {
+  async function handleTest () {
+ 
     var res = await axios.get('/test.json')
     const ipfs = await IPFS.create()
 
@@ -98,43 +97,66 @@ function Box() {
     }
     resetMessageRecords(records)
   }
+ 
+  useEffect(() => {
+    if(hasRecv.current){
+      hasRecv.current = false;
+      return;
+    }
+    handleRecv()
+ 
+  },[])
   return (
     <>
-      <div className='p3 text-center'>
-        
-        <Button className="wallet-adapter-button-trigger w-30" onClick={handleClick}>
-          receive message
-        </Button> 
-        <div className="grid grid-cols-1 gap-6 lg:gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          <ul className="space-y-8">
-            {
-              messageRecords.map((record: any) => {
-                return(
-                  <li className="text-sm leading-6"  key={record.id}>
-                    <figure className="relative flex flex-col-reverse bg-slate-100 rounded-lg p-6 dark:bg-slate-800 dark:highlight-white/5">
-                      <blockquote className="mt-6 text-slate-700 dark:text-slate-300">
-                        <p>{record.data.msg.content}</p>
-                      </blockquote>
-                      <figcaption className="flex items-center space-x-4">
-                        <img src="/logo192.png" className="flex-none w-14 h-14 rounded-full object-cover" loading="lazy" decoding="async" />
-                        <div className="flex-auto">
-                          <div className="text-base text-slate-900 font-semibold dark:text-slate-300">
-                            <span className="absolute inset-0"></span>{record.from}
-                          </div>
-                          <div className="mt-0.5">{record.data.msg.title}</div>
-                          </div>
-                      </figcaption>
-                    </figure>
-                  </li>
-                )
-              })
-            }
+      <div className="mt-4 w-full h-full">
+      <div className= "grid grid-cols-1 gap-2" >
+        {messageRecords.length ? (
+          messageRecords.map((record: any) => (
+            <div className="w-full shadow h-auto bg-white rounded-md">
+            <div className="flex items-center space-x-2 p-2.5 px-4">
+              <div className="w-10 h-10">
+                <RiUserReceivedFill className="w-full h-full rounded-full" />
+              </div>
+              <div className="flex-grow flex flex-col">
+                <p className="font-semibold text-sm text-gray-700 break-all"> {record.from}</p>
+                <span className="text-xs font-thin text-gray-400">
+                  {
+                  //moment(post.createdAt).fromNow()
+                }
+                </span>
+              </div>
+              <div className="w-8 h-8">
+                <button className="w-full h-full hover:bg-gray-100 rounded-full text-gray-400 focus:outline-none">
+                  <i className="fas fa-ellipsis-h"></i>
+                </button>
+              </div>
+            </div>
+          
+              <div className="mb-1">
+                <p className="text-gray-700 max-h-10 truncate px-3 text-sm">
+                {record.data.msg.title}
+                </p>
+              </div>
             
-          </ul>
-        </div>
+      
+            <div className="w-full flex flex-col space-y-2 p-2 px-4">
+              <div className="flex items-center justify-between pb-2 border-b border-gray-300 text-gray-500 text-sm">
+                 
+              </div>
+              <div className="flex space-x-3 text-gray-500 text-sm font-thin">
+              {record.data.msg.content}
+              </div>
+            </div>
+          </div>
+          ))
+        ) : (
+          <p>No message yet!</p>
+        )}
       </div>
+    </div>
+     
     </>
   );
-}
+};
 
-export default Box;
+export default Inbox;

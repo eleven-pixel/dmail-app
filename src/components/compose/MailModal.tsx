@@ -7,10 +7,11 @@ import { useMailModal } from './useMailModal';
 import { useWallet } from '@demox-labs/aleo-wallet-adapter-react';
 import { Transaction, WalletAdapterNetwork, WalletNotConnectedError } from '@demox-labs/aleo-wallet-adapter-base';
 import { LeoWalletAdapter } from '@demox-labs/aleo-wallet-adapter-leo';
-import { DMAIL_PROGRAM_NAME } from '../App';
+import { DMAIL_PROGRAM_NAME } from '../../Utils';
 
 import * as IPFS from 'ipfs-core'
-import Utils from '../Utils';
+import Utils from '../../Utils';
+
 export interface MailModalProps {
     className?: string;
     container?: string;
@@ -124,11 +125,13 @@ export const MailModal: FC<MailModalProps> = ({ className = '', container = 'bod
 
         var replyCid = Utils.cidToField("")
         console.log(replyCid)
-
+        const timestamp: number = Date.parse(new Date().toString())
+        console.log(timestamp)
         const inputs = [
           refTo.current?.value,
           `${messageCid}`,
           `${replyCid}`,
+          `${timestamp}field`,
         ];
         console.log(inputs)
         
@@ -165,7 +168,7 @@ export const MailModal: FC<MailModalProps> = ({ className = '', container = 'bod
                             </svg>
                         </button>
                         <h1 style={{ fontWeight:500, fontSize:25, lineHeight:"36px", margin:0,  padding:"16px 32px 1px 32px", color:"#fff"}}>
-                        send mail message
+                        New Message
                         </h1>
                         <form className="relative flex w-full flex-col rounded-full pl-5 pr-5" >
 
@@ -176,7 +179,7 @@ export const MailModal: FC<MailModalProps> = ({ className = '', container = 'bod
                             ref={refTo} /> 
                             </label>
 
-                            <p className="text-gray-600">Title: </p>
+                            <p className="text-gray-600">Subject: </p>
                             <label className="flex w-full items-center py-2">
                             <input className="h-11 p-1 w-full appearance-none rounded-lg border-2 border-gray-200 bg-transparent py-1 text-sm tracking-tighter text-gray-900 outline-none transition-all placeholder:text-gray-600 focus:border-gray-300 border-gray-600 text-white placeholder:text-gray-500 focus:border-gray-500" 
                             ref={refTitle} /> 
