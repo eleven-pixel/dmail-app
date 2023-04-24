@@ -1,6 +1,6 @@
 # dmail-app
 
-Building damil app using React, Tailwind CSS, and TypeScript 🔥
+Building dmail app using React, Tailwind CSS, and TypeScript 🔥
 
 <img src="/public/compose.png" alt="screenshot"/>
 
